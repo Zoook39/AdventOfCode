@@ -59,21 +59,32 @@ namespace AdventOfCode2020.Controllers
 
         public void Day2(SolutionViewModel solution){
             string[] lines = solution.inputText.Trim().Split("\n");
-            Regex r = new Regex(@"(?<min>\d+)-(?<max>\d+) (?<reqChar>\D): (?<password>\D+)");
-            int correctPasswords = 0;
+            Regex r = new Regex(@"(?<firstVal>\d+)-(?<secondVal>\d+) (?<reqChar>\D): (?<password>\D+)");
+            int part1CorrectPasswords = 0, part2CorrectPasswords = 0;
             foreach(string line in lines){
                 Match match = r.Match(line);
-                int count = 0;
-                foreach(char c in match.Groups["password"].Value){
-                    if (c == match.Groups["reqChar"].Value[0]){
-                        count++;
+                int firstVal = Int32.Parse(match.Groups["firstVal"].Value);
+                int secondVal = Int32.Parse(match.Groups["secondVal"].Value);
+                string password = match.Groups["password"].Value;
+                char reqChar = match.Groups["reqChar"].Value[0];
+                //get count for part 1
+                int part1Count = 0;
+                foreach(char c in password){
+                    if (c == reqChar){
+                        part1Count++;
                     }
-                }     
-                if (count>=Int32.Parse(match.Groups["min"].Value)&&count<=Int32.Parse(match.Groups["max"].Value)){
-                    correctPasswords++;
+                }
+                //check positions for part 2  
+                if (password[(firstVal-1)]==reqChar^password[(secondVal-1)]==reqChar){
+                    part2CorrectPasswords++;
+                }
+                //check count for part 1
+                if (part1Count>=firstVal&&part1Count<=secondVal){
+                    part1CorrectPasswords++;
                 }
             }
-            solution.outputText1=correctPasswords.ToString();
+            solution.outputText1=part1CorrectPasswords.ToString();
+            solution.outputText2=part2CorrectPasswords.ToString();
         }
     }
 }
