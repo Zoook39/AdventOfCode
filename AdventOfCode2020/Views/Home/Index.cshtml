@@ -1,8 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table mx-auto" style="width: 500px;">
+        <thead>
+            <tr>
+                <th scope="col">Day</th>
+                <th scope="col">AoC Page</th>
+                <th scope="col">Solutions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 1; i <= 25; i++)
+            {
+                <tr>
+                    <th scope="row">@i</th>
+                    <td><a href="https://adventofcode.com/2020/day/@i">View AoC Page</a></td>
+                    <td><a asp-area="" asp-controller="Solutions" asp-action="Day_@i">View Solution Page</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

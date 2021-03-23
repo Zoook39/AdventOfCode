@@ -447,3 +447,8 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+##
+## PowerShell Scripts
+##
+*.ps1

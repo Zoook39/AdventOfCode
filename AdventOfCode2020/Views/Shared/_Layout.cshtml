@@ -21,6 +21,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Solutions</a>
+                            <div class="dropdown-menu" aria-labeledby="navbarDropdown">
+                                @for (int i = 1; i <= 25; i++)
+                                {
+                                    <a class="dropdown-item" asp-controller="Solutions" asp-action="Day_@i">Day @i</a>
+                                }
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
