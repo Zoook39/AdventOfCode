@@ -32,8 +32,12 @@ namespace AdventOfCode2020.Controllers
         public string Day1(string input){
             string[] lines = input.Trim().Split("\n");
             int[] numbers = new int[lines.Length];
-            for (int i = 0;i<numbers.Length;i++){
-                numbers[i] = Int32.Parse(lines[i]);
+            try{
+                for (int i = 0;i<numbers.Length;i++){
+                    numbers[i] = Int32.Parse(lines[i]);
+                }
+            } catch {
+                Console.WriteLine("Found a non number in day 1 input");
             }
             foreach(int first in numbers){
                 foreach(int second in numbers){
