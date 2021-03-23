@@ -28,13 +28,16 @@ namespace AdventOfCode2020.Controllers
                     case 2:
                         Day2(solutionModel);
                         break;
+                    case 3:
+                        Day3(solutionModel);
+                        break;
                     
                 }
             }
             return View(solutionModel);
         }
         public void Day1(SolutionViewModel solution){
-            string[] lines = solution.inputText.Trim().Split("\n");
+            string[] lines = solution.GetLines();
             int[] numbers = new int[lines.Length];
             try{
                 for (int i = 0;i<numbers.Length;i++){
@@ -58,7 +61,7 @@ namespace AdventOfCode2020.Controllers
         }
 
         public void Day2(SolutionViewModel solution){
-            string[] lines = solution.inputText.Trim().Split("\n");
+            string[] lines = solution.GetLines();
             Regex r = new Regex(@"(?<firstVal>\d+)-(?<secondVal>\d+) (?<reqChar>\D): (?<password>\D+)");
             int part1CorrectPasswords = 0, part2CorrectPasswords = 0;
             foreach(string line in lines){
@@ -85,6 +88,22 @@ namespace AdventOfCode2020.Controllers
             }
             solution.outputText1=part1CorrectPasswords.ToString();
             solution.outputText2=part2CorrectPasswords.ToString();
+        }
+        public void Day3(SolutionViewModel solution){
+            string[] lines = solution.GetLines();
+            int row = 0;
+            int column = 0;
+            int treeCount = 0;
+            while (row<lines.Length){
+                string currentLine = lines[row].Trim();
+                char currentPos = currentLine[column%(currentLine.Length)];
+                if (currentPos=='#'){
+                    treeCount++;
+                }
+                row++;
+                column+=3;
+            }
+            solution.outputText1=treeCount.ToString();
         }
     }
 }

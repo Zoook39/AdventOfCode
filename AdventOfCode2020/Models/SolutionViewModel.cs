@@ -6,5 +6,9 @@ namespace AdventOfCode2020.Models{
         public string inputText{get;set;}
         public string outputText1{get;set;}
         public string outputText2{get;set;}
+
+        public string[] GetLines(){
+            return inputText.Trim().Split("\n");
+        }
     }
 }
