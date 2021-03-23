@@ -1,0 +1,14 @@
+@model SolutionViewModel
+@{
+        ViewData["Title"] = "Day " + Model.day;
+}
+<div class="text-center">
+    <h1><a href="https://adventofcode.com/2020/day/@Model.day">Day @Model.day Problem</a></h1>
+    <form>
+        <div class="form-group">
+            <label for="inputTextArea">Paste Input Here:</label>
+            <textarea class="form-control" id="inputTextArea"></textarea>
+            <button type="submit" class="btn btn-primary">Calculate Output</button>
+        </div>
+    </form>
+</div>

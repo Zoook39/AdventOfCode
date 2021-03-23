@@ -16,7 +16,7 @@
                 <tr>
                     <th scope="row">@i</th>
                     <td><a href="https://adventofcode.com/2020/day/@i">View AoC Page</a></td>
-                    <td><a asp-area="" asp-controller="Solutions" asp-action="Day_@i">View Solution Page</a></td>
+                    <td><a asp-area="" asp-controller="Solutions" asp-action="Solution" asp-route-day=@i>View Solution Page</a></td>
                 </tr>
             }
         </tbody>
