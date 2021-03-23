@@ -91,19 +91,26 @@ namespace AdventOfCode2020.Controllers
         }
         public void Day3(SolutionViewModel solution){
             string[] lines = solution.GetLines();
+            
+            solution.outputText1=Day3Traverser(1,3,lines).ToString();
+            solution.outputText2=(Day3Traverser(1,1,lines)*Day3Traverser(1,3,lines)*Day3Traverser(1,5,lines)*Day3Traverser(1,7,lines)*Day3Traverser(2,1,lines)).ToString();
+        }
+
+        public long Day3Traverser(int slopeX, int slopeY, string[] lines){
             int row = 0;
             int column = 0;
-            int treeCount = 0;
+            long treeCount = 0;
             while (row<lines.Length){
                 string currentLine = lines[row].Trim();
                 char currentPos = currentLine[column%(currentLine.Length)];
                 if (currentPos=='#'){
                     treeCount++;
                 }
-                row++;
-                column+=3;
+                row+=slopeX;
+                column+=slopeY;
             }
-            solution.outputText1=treeCount.ToString();
+
+            return treeCount;
         }
     }
 }
