@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AdventOfCode2020.Models;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode2020.Controllers
 {
@@ -23,6 +24,9 @@ namespace AdventOfCode2020.Controllers
                 {
                     case 1:
                         Day1(solutionModel);
+                        break;
+                    case 2:
+                        Day2(solutionModel);
                         break;
                     
                 }
@@ -51,6 +55,25 @@ namespace AdventOfCode2020.Controllers
                     }
                 }
             }
+        }
+
+        public void Day2(SolutionViewModel solution){
+            string[] lines = solution.inputText.Trim().Split("\n");
+            Regex r = new Regex(@"(?<min>\d+)-(?<max>\d+) (?<reqChar>\D): (?<password>\D+)");
+            int correctPasswords = 0;
+            foreach(string line in lines){
+                Match match = r.Match(line);
+                int count = 0;
+                foreach(char c in match.Groups["password"].Value){
+                    if (c == match.Groups["reqChar"].Value[0]){
+                        count++;
+                    }
+                }     
+                if (count>=Int32.Parse(match.Groups["min"].Value)&&count<=Int32.Parse(match.Groups["max"].Value)){
+                    correctPasswords++;
+                }
+            }
+            solution.outputText1=correctPasswords.ToString();
         }
     }
 }
