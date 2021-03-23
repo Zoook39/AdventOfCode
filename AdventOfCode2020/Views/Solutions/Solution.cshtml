@@ -9,10 +9,15 @@
             <label for="inputText">Paste Input Here:</label>
             <textarea class="form-control" name="inputText"></textarea>
             <button type="submit" class="btn btn-primary">Calculate Output</button>
-            @if (Model.outputText != null)
+            @if (Model.outputText1 != null)
             {
                 
-                <textarea readonly="true" class="form-control">@Model.outputText</textarea>
+                <textarea readonly="true" class="form-control">@Model.outputText1</textarea>
+            }
+            @if (Model.outputText2 != null)
+            {
+                
+                <textarea readonly="true" class="form-control">@Model.outputText2</textarea>
             }
         </div>
     </form>

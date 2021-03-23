@@ -22,15 +22,15 @@ namespace AdventOfCode2020.Controllers
                 switch (solutionModel.day)
                 {
                     case 1:
-                        solutionModel.outputText = Day1(solutionModel.inputText);
+                        Day1(solutionModel);
                         break;
                     
                 }
             }
             return View(solutionModel);
         }
-        public string Day1(string input){
-            string[] lines = input.Trim().Split("\n");
+        public void Day1(SolutionViewModel solution){
+            string[] lines = solution.inputText.Trim().Split("\n");
             int[] numbers = new int[lines.Length];
             try{
                 for (int i = 0;i<numbers.Length;i++){
@@ -42,11 +42,15 @@ namespace AdventOfCode2020.Controllers
             foreach(int first in numbers){
                 foreach(int second in numbers){
                     if (first+second==2020){
-                        return (first*second).ToString();
+                        solution.outputText1 = (first*second).ToString();
+                    }
+                    foreach(int third in numbers){
+                        if(first+second+third==2020){
+                            solution.outputText2 = (first*second*third).ToString();
+                        }
                     }
                 }
             }
-            return null;
         }
     }
 }
