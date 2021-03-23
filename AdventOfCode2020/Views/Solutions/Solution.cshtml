@@ -4,11 +4,17 @@
 }
 <div class="text-center">
     <h1><a href="https://adventofcode.com/2020/day/@Model.day">Day @Model.day Problem</a></h1>
-    <form>
+    <form method="post" asp-controller="Solutions" asp-action="Solution" asp-route-day=@Model.day>
         <div class="form-group">
-            <label for="inputTextArea">Paste Input Here:</label>
-            <textarea class="form-control" id="inputTextArea"></textarea>
+            <label for="inputText">Paste Input Here:</label>
+            <textarea class="form-control" name="inputText"></textarea>
             <button type="submit" class="btn btn-primary">Calculate Output</button>
+            @if (Model.outputText != null)
+            {
+                
+                <textarea readonly="true" class="form-control">@Model.outputText</textarea>
+            }
         </div>
     </form>
+    
 </div>
