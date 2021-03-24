@@ -31,6 +31,9 @@ namespace AdventOfCode2020.Controllers
                     case 3:
                         Day3(solutionModel);
                         break;
+                    case 4:
+                        Day4(solutionModel);
+                        break;
                     
                 }
             }
@@ -111,6 +114,78 @@ namespace AdventOfCode2020.Controllers
             }
 
             return treeCount;
+        }
+
+        class Passport{
+            public static string[] keys = new string[]{"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"};
+            bool[] values = new bool[keys.Length];
+            public void SetTrue(string key){
+                int index = GetIndexOf(key);
+                values[index] = true;
+            }
+            public bool GetValue(string key){
+                int index = GetIndexOf(key);
+                return values[index];
+            }
+            private int GetIndexOf(string key){
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (keys[i] == key){
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            public bool IsValidPassport(){
+                int index = 0;
+                while(values[index]){
+                    index++;
+                    if (index==keys.Length){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            public bool IsValidNPC(){
+                int index = 0;
+                while(values[index]){
+                    index++;
+                    if (index==keys.Length-1){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+        }
+        public void Day4(SolutionViewModel solution){
+            Regex r = new Regex(@"(?<key>[a-z]{3}):(?<value>\S+)");
+            string[] lines = solution.GetLines();
+            List<Passport> passports = new List<Passport>();
+            passports.Add(new Passport());
+            int passportIndex = 0;
+            foreach(string line in lines){
+                if(line.Trim() == ""){
+                    passportIndex++;
+                    passports.Add(new Passport());
+                }
+                MatchCollection matches = r.Matches(line);
+                foreach(Match m in matches){
+                    string key = m.Groups["key"].Value;
+                    foreach(string s in Passport.keys){
+                        if (key==s){
+                            passports[passportIndex].SetTrue(key);
+                        }
+                    }
+                }
+            }
+            int correctPassports = 0;
+            foreach (Passport p in passports){
+                if(p.IsValidNPC()){
+                    correctPassports++;
+                }
+            }
+            solution.outputText1 = correctPassports.ToString();
         }
     }
 }
