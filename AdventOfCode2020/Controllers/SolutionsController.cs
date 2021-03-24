@@ -119,9 +119,65 @@ namespace AdventOfCode2020.Controllers
         class Passport{
             public static string[] keys = new string[]{"byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid", "cid"};
             bool[] values = new bool[keys.Length];
+            public string[] rawValues = new string[keys.Length];
             public void SetTrue(string key){
                 int index = GetIndexOf(key);
                 values[index] = true;
+            }
+            public void CheckInput(string key, string input){
+                bool valid = false;
+                try{
+                    if (key=="byr"){
+                        int year = Int32.Parse(input);
+                        valid = (year>=1920)&(year<=2002);
+                    }
+                    else if (key=="iyr"){
+                        int year = Int32.Parse(input);
+                        valid = (year>=2010)&(year<=2020);
+                    }
+                    else if (key=="eyr"){
+                        int year = Int32.Parse(input);
+                        valid = (year>=2020)&(year<=2030);
+                    }
+                    else if (key=="hgt"){
+                        Regex r = new Regex(@"(?<height>\d\d\d)(?<unit>cm)|(?<height>\d\d)(?<unit>in)");
+                        Match m = r.Match(input);
+                        int height = Int32.Parse(m.Groups["height"].Value);
+                        if(m.Groups["unit"].Value=="cm"){
+                            valid = (height>=150)&(height<=193);
+                        }
+                        else if (m.Groups["unit"].Value == "in"){
+                            valid = (height>=59)&(height<=76);
+                        }
+                    }
+                    else if (key=="hcl"){
+                        Regex r = new Regex(@"^#[a-f,0-9]{6}$");
+                        Match m = r.Match(input);
+                        valid = m.Length>1;
+                    }
+                    else if (key=="ecl"){
+                        string[] colors = new string[]{"amb","blu","brn","gry","grn","hzl","oth"};
+                        foreach(string color in colors){
+                            if (input == color){
+                                valid = true;
+                            }
+                        }
+                    }
+                    else if (key=="pid"){
+                        Regex r = new Regex(@"^\d{9}$");
+                        Match m = r.Match(input);
+                        valid = m.Length>1;
+                    }
+                    else if (key=="cid"){
+                        valid = true;
+                    }
+                } catch {
+                    return;
+                }
+                if (valid){
+                    SetTrue(key);
+                    rawValues[GetIndexOf(key)] = input;
+                }
             }
             public bool GetValue(string key){
                 int index = GetIndexOf(key);
@@ -136,17 +192,7 @@ namespace AdventOfCode2020.Controllers
                 }
                 return -1;
             }
-            public bool IsValidPassport(){
-                int index = 0;
-                while(values[index]){
-                    index++;
-                    if (index==keys.Length){
-                        return true;
-                    }
-                }
-                return false;
-            }
-            public bool IsValidNPC(){
+            public bool IsValid(){
                 int index = 0;
                 while(values[index]){
                     index++;
@@ -161,31 +207,47 @@ namespace AdventOfCode2020.Controllers
         public void Day4(SolutionViewModel solution){
             Regex r = new Regex(@"(?<key>[a-z]{3}):(?<value>\S+)");
             string[] lines = solution.GetLines();
-            List<Passport> passports = new List<Passport>();
-            passports.Add(new Passport());
+            List<Passport> passports1 = new List<Passport>();
+            List<Passport> passports2 = new List<Passport>();
+            passports1.Add(new Passport());
+            passports2.Add(new Passport());
             int passportIndex = 0;
             foreach(string line in lines){
                 if(line.Trim() == ""){
                     passportIndex++;
-                    passports.Add(new Passport());
+                    passports1.Add(new Passport());
+                    passports2.Add(new Passport());
                 }
                 MatchCollection matches = r.Matches(line);
                 foreach(Match m in matches){
                     string key = m.Groups["key"].Value;
                     foreach(string s in Passport.keys){
                         if (key==s){
-                            passports[passportIndex].SetTrue(key);
+                            passports1[passportIndex].SetTrue(key);
                         }
                     }
+                    passports2[passportIndex].CheckInput(key, m.Groups["value"].Value);
                 }
             }
             int correctPassports = 0;
-            foreach (Passport p in passports){
-                if(p.IsValidNPC()){
+            foreach (Passport p in passports1){
+                if(p.IsValid()){
                     correctPassports++;
                 }
             }
             solution.outputText1 = correctPassports.ToString();
+            correctPassports = 0;
+            foreach (Passport p in passports2){
+                if(p.IsValid()){
+                    for (int i = 0; i < Passport.keys.Length; i++)
+                    {
+                        Console.WriteLine(Passport.keys[i]+":"+p.rawValues[i]);
+                    }
+                    Console.WriteLine();
+                    correctPassports++;
+                }
+            }
+            solution.outputText2 = correctPassports.ToString();
         }
     }
 }
