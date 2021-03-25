@@ -34,7 +34,9 @@ namespace AdventOfCode2020.Controllers
                     case 4:
                         Day4(solutionModel);
                         break;
-                    
+                    case 5:
+                        Day5(solutionModel);
+                        break;
                 }
             }
             return View(solutionModel);
@@ -249,5 +251,46 @@ namespace AdventOfCode2020.Controllers
             }
             solution.outputText2 = correctPassports.ToString();
         }
+        
+        public int BinaryOp(int min, int max, string direction){
+            if (min==max){
+                return max;
+            }
+            if (direction.Length==0){
+                Console.WriteLine("Reached end of instructions, can't complete BinaryOp|"+min+","+max);
+                return -1;
+            }
+            if (direction[0]=='f'||direction[0]=='l'){
+                return BinaryOp(min,max-((max-min)/2)-1,direction.Substring(1));
+            }
+            else if (direction[0]=='b'||direction[0]=='r'){
+                return BinaryOp(max-((max-min)/2), max, direction.Substring(1));
+            }
+            return -1;
+        }
+        public void Day5(SolutionViewModel solution){
+            List<int> seatIDs = new List<int>();
+            string[] lines = solution.GetLines();
+
+            foreach (string line in lines){
+                int row = BinaryOp(0,127,line.Substring(0,7).ToLower());
+                int seat = BinaryOp(0,7,line.Substring(7).ToLower());
+                seatIDs.Add((row*8)+seat);
+            }
+            seatIDs.Sort();
+            solution.outputText1 = seatIDs.Last<int>().ToString();
+            int prev = seatIDs.First<int>();
+            seatIDs.RemoveAt(0);
+            foreach(int next in seatIDs){
+                int guess = prev+1;
+                if (guess != next){
+                    solution.outputText2 = guess.ToString();
+                }
+                prev = next;
+                
+            }
+            
+        }
+
     }
 }
