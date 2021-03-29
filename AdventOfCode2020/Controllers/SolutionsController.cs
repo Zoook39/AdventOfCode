@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -36,6 +37,9 @@ namespace AdventOfCode2020.Controllers
                         break;
                     case 5:
                         Day5(solutionModel);
+                        break;
+                    case 6:
+                        Day6(solutionModel);
                         break;
                 }
             }
@@ -292,5 +296,29 @@ namespace AdventOfCode2020.Controllers
             
         }
 
+        public void Day6(SolutionViewModel solution){
+            string[] lines = solution.GetLines();
+            Dictionary<char, bool> answerDict = new Dictionary<char, bool>();
+            List<Dictionary<char,bool>> groupList = new List<Dictionary<char, bool>>();
+            int groupIndex = 0;
+            groupList.Add(new Dictionary<char, bool>());
+            foreach(string line in lines){
+                if (line.Trim() == ""){
+                    groupIndex++;
+                    groupList.Add(new Dictionary<char, bool>());
+                }
+                else{
+                    
+                    foreach (char c in line.Trim()){
+                        groupList[groupIndex][c] = true;
+                    }
+                }
+            }
+            int sum = 0;
+            foreach(Dictionary<char,bool> dict in groupList){
+                sum += dict.Count;
+            }
+            solution.outputText1 = (sum).ToString();
+        }
     }
 }
